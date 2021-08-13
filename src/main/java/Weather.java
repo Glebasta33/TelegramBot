@@ -1,4 +1,3 @@
-import org.apache.commons.logging.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -13,11 +12,11 @@ public class Weather {
 
     public static String getWeather(String message) throws IOException {
 
-        URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + message + "&units=metric&lang=" + lang + "&appid=7cf64e1c8c797fed23127143efd266f2");
+        URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + message + "&units=metric&lang=" + lang + "&appid=" + TokenStorage.API_TOKEN_OPEN_WEATHER);
         Scanner in = new Scanner((InputStream) url.getContent());
-        String result = "";
+        StringBuilder builder = new StringBuilder();
         while (in.hasNext()) {
-            result += in.nextLine();
+            builder.append(in.nextLine());
         }
 
         try {
@@ -26,7 +25,7 @@ public class Weather {
             e.printStackTrace();
         }
 
-        JSONObject jsonObject = new JSONObject(result);
+        JSONObject jsonObject = new JSONObject(builder.toString());
         String name = jsonObject.getString("name");
 
         JSONObject jsonObjectMain = jsonObject.getJSONObject("main");
